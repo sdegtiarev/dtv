@@ -3,7 +3,7 @@
 #include <thread>
 #include <QtGui/QPainter>
 #include <QtGui/QPrinter>
-
+#include <qwt_plot_grid.h>
 
 
 
@@ -14,6 +14,8 @@ dtv::widget::widget(QWidget* parent)
 	setPalette(QColor(Qt::white));
 	setAutoFillBackground(true);
 	insertLegend(new QwtLegend(this), QwtPlot::BottomLegend);
+	auto grid=new QwtPlotGrid();
+	grid->attach(this);
 
 	std::thread(ld).detach();
 	//_board=new board(this);

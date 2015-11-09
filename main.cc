@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 
 	dtv::widget x;
 	QObject::connect(&x, SIGNAL(quit()), qApp, SLOT(quit()));
-	x.sample();
+	//x.sample();
 	x.show();
 
 	return app.exec();

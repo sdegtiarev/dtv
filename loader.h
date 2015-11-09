@@ -66,18 +66,22 @@ private:
 
 	void flush_plot()
 	{
+		static QColor color[]={ QColor("red"), QColor("blue"), QColor("black"), QColor("green")};
+		static int idx=0;
 		if(x.empty())
 			return;
 		std::lock_guard<std::mutex> lock(*_mtx);
 		for(int i=0; i < y.size(); ++i) {
 			auto pl=new QwtPlotCurve("plot");
-			pl->setPen(QColor("red"));
+			pl->setPen(QPen(color[idx++],2));
+			idx%=4;
 			pl->setTitle(title.c_str());
 			pl->setSamples(x.data(), y[i].data(), x.size());
 			_plot->push_back(pl);
 		}
 		x.clear();
 		y.clear();
+		title.clear();
 	}
 
 	std::string title;
