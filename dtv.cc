@@ -17,15 +17,7 @@ dtv::widget::widget(QWidget* parent)
 	auto grid=new QwtPlotGrid();
 	grid->attach(this);
 
-	std::thread(ld).detach();
-	//_board=new board(this);
-
 	connect(&_timer, SIGNAL(timeout()), this, SLOT(check()));
-	_timer.start(10);
-	// _tab.setSpacing(0);
-	// _tab.setMargin(0);
-	// _tab.addWidget(_board, 1);
-	// setLayout(&_tab);
 }
 
 
@@ -92,6 +84,12 @@ void dtv::widget::ctrl_key_event(QKeyEvent* e)
 }
 
 
+void dtv::widget::load(std::vector<std::string> files)
+{
+	ld.reset(new loader(files)); 
+	std::thread([this]{ this->ld->run(); }).detach();
+	_timer.start(100);
+}
 
 
 

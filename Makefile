@@ -1,6 +1,6 @@
 
-CXX= g++ -std=c++11 
-CXXFLAGS= -I/usr/include/qt4 -I/usr/include/qwt -I/usr/include/qt4/Qt
+CXX= g++ 
+CXXFLAGS= -g -std=c++14 -I/usr/include/qt4 -I/usr/include/qwt -I/usr/include/qt4/Qt
 LDFLAGS= 
 LDLIBS= -lqwt -lQtGui -lQtCore -lpthread 
 

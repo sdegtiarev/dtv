@@ -33,17 +33,14 @@ public:
 	widget(QWidget* =0);
 	~widget() {}
 	void sample();
+	void load(std::vector<std::string>);
 	
 signals:
 	void quit();
 	
 private slots:
 	void check() {
-		if(!ld) {
-			_timer.stop();
-			return;
-		}
-		for(auto pl=ld.get(); pl; pl=ld.get())
+		for(auto pl=ld->get(); pl; pl=ld->get())
 		{
 			pl->attach(this);
 			replot();
@@ -55,7 +52,7 @@ protected:
 	
 private:
 	QTimer _timer;
-	loader ld;
+	std::unique_ptr<loader> ld;
 	void plain_key_event(QKeyEvent*);
 	void ctrl_key_event(QKeyEvent*);
 };

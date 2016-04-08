@@ -5,26 +5,46 @@
 #include <mutex>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 
 
 
 class loader
 {
 public:
-	loader()
+	loader(std::vector<std::string> file)
 	: _mtx{std::make_shared<std::mutex>()}
 	, _plot{std::make_shared<std::list<QwtPlotCurve*>>()}
+	, _file(file)
 	{}
 
-	void operator()() {
-		std::string token;
-		while(std::getline(std::cin, token)) {
-			if(parse(token)) {
-				flush_plot();
+	void run() {
+		if(_file.empty()) {
+			load(std::cin);
+			std::cin.clear();
+		}
+		for(auto file : _file) {
+			if(file == "-") {
+				load(std::cin);
+				std::cin.clear();
+			} else {
+				std::ifstream f(file);
+				load(f);
 			}
 		}
-		flush_plot();
-		_plot.reset();
+	}
+
+	void load(std::istream& f) {
+		std::string token;
+		std::getline(f, token);
+		while(f) {
+			while(f && parse(token)) {
+				title=token;
+				std::getline(f, token);
+			}
+			while(!parse(token) && std::getline(f, token));
+			flush_plot();
+		}
 	}
 
 	operator bool() const { return bool(_plot); }
@@ -58,10 +78,8 @@ private:
 			}
 			return 0;
 
-		} else {
-			title=s;
+		} else
 			return 1;
-		}
 	}
 
 	void flush_plot()
@@ -90,6 +108,7 @@ private:
 
 	std::shared_ptr<std::mutex> _mtx;
 	std::shared_ptr<std::list<QwtPlotCurve*>> _plot;
+	std::vector<std::string> _file;
 };
 
 
