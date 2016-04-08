@@ -34,6 +34,7 @@ public:
 	~widget() {}
 	void sample();
 	void load(std::vector<std::string>);
+	void title(std::string s) { setWindowTitle(s.c_str()); }
 	
 signals:
 	void quit();

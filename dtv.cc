@@ -11,6 +11,7 @@
 dtv::widget::widget(QWidget* parent)
 : QwtPlot(parent)
 {
+	setWindowTitle(" ");
 	setPalette(QColor(Qt::white));
 	setAutoFillBackground(true);
 	insertLegend(new QwtLegend(this), QwtPlot::BottomLegend);
