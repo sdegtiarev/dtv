@@ -35,6 +35,7 @@ public:
 	void sample();
 	void load(std::vector<std::string>);
 	void title(std::string s) { setWindowTitle(s.c_str()); }
+	int status() const { return st; }
 	
 signals:
 	void quit();
@@ -54,6 +55,7 @@ protected:
 private:
 	QTimer _timer;
 	std::unique_ptr<loader> ld;
+	int st;
 	void plain_key_event(QKeyEvent*);
 	void ctrl_key_event(QKeyEvent*);
 };

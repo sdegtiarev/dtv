@@ -22,5 +22,6 @@ int main(int argc, char *argv[])
 	//x.sample();
 	x.show();
 
-	return app.exec();
+	app.exec();
+	return x.status();
 }

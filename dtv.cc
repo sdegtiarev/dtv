@@ -68,7 +68,8 @@ void dtv::widget::plain_key_event(QKeyEvent* e)
 void dtv::widget::ctrl_key_event(QKeyEvent* e)
 {
 	switch(e->key()) {
-		case Qt::Key_Q: emit(quit()); update(); break;
+		case Qt::Key_Q: st=0; emit(quit()); update(); break;
+		case Qt::Key_X: st=1; emit(quit()); update(); break;
 /*
 		case Qt::Key_Left: _board->show_prev_checked(); break;
 		case Qt::Key_Right: _board->show_next_checked(); break;
