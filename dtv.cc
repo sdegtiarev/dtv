@@ -3,6 +3,7 @@
 #include <thread>
 #include <QtGui/QPainter>
 #include <QtGui/QPrinter>
+#include <QtCore/QTextCodec>
 #include <qwt_plot_grid.h>
 
 
@@ -84,6 +85,26 @@ void dtv::widget::ctrl_key_event(QKeyEvent* e)
 		default: e->ignore(); break;
 	}
 }
+
+
+void dtv::widget::memo(int sz)
+{
+ 	auto font=legend()->font();
+ 	font.setPointSize(sz);
+	legend()->setFont(font);
+	//QFont font("Arial", sz);
+}
+
+void dtv::widget::xlabel(std::string s)
+{
+	setAxisTitle(2, QTextCodec::codecForName("UTF8")->toUnicode(s.c_str()));
+}
+
+void dtv::widget::ylabel(std::string s)
+{
+	setAxisTitle(0, QTextCodec::codecForName("UTF8")->toUnicode(s.c_str()));
+}
+
 
 
 void dtv::widget::load(std::vector<std::string> files)

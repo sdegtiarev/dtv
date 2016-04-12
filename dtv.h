@@ -35,6 +35,9 @@ public:
 	void sample();
 	void load(std::vector<std::string>);
 	void title(std::string s) { setWindowTitle(s.c_str()); }
+	void memo(int);
+	void xlabel(std::string);
+	void ylabel(std::string);
 	int status() const { return st; }
 	
 signals:
