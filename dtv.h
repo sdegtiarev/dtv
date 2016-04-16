@@ -38,6 +38,7 @@ public:
 	void memo(int);
 	void xlabel(std::string);
 	void ylabel(std::string);
+	void palette(std::string s) { _palette=s; }
 	int status() const { return st; }
 	
 signals:
@@ -58,7 +59,9 @@ protected:
 private:
 	QTimer _timer;
 	std::unique_ptr<loader> ld;
+	std::string _palette;
 	int st;
+
 	void plain_key_event(QKeyEvent*);
 	void ctrl_key_event(QKeyEvent*);
 };

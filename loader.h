@@ -9,13 +9,58 @@
 
 
 
+class clgen
+{
+	std::vector<QBrush> p1, p2;
+	size_t i;
+
+public:
+	clgen(std::string s)
+	: p1{split(s)}
+	, p2{split(s)}
+	, i{0}
+	{
+		if(p2.empty()) { p2=p1; p1.clear(); }
+	}
+
+	operator QBrush()
+	{
+		if(!p1.empty()) {
+			if(i < p1.size()) return p1[i++];
+			else { i=0; p1.clear(); }
+		}
+		if(p2.empty()) return QBrush("red");
+		return p2[i++ % p2.size()];
+	}
+
+private:
+	static std::vector<QBrush> split(std::string& s)
+	{
+		std::vector<QBrush> r;
+		while(1) {
+			auto n=s.find_first_of(", ()[]");
+			auto color=s.substr(0,n);
+			s.erase(0,n);
+			if(!color.empty()) r.push_back(QBrush(color.c_str()));
+
+			if(s.empty()) return r;
+			char ch=s[0]; s.erase(0,1);
+			if(ch == '(' || ch == ')' 
+				|| ch == '[' || ch == ']')
+				return r;
+		}
+	}
+};
+
+
 class loader
 {
 public:
-	loader(std::vector<std::string> file)
+	loader(std::vector<std::string> file, std::string colors)
 	: _mtx{std::make_shared<std::mutex>()}
 	, _plot{std::make_shared<std::list<QwtPlotCurve*>>()}
 	, _file(file)
+	, _palette(colors)
 	{}
 
 	void run() {
@@ -84,15 +129,12 @@ private:
 
 	void flush_plot()
 	{
-		static QColor color[]={ QColor("red"), QColor("blue"), QColor("black"), QColor("green")};
-		static int idx=0;
 		if(x.empty())
 			return;
 		std::lock_guard<std::mutex> lock(*_mtx);
 		for(int i=0; i < y.size(); ++i) {
 			auto pl=new QwtPlotCurve("plot");
-			pl->setPen(QPen(color[idx++],2));
-			idx%=4;
+			pl->setPen(QPen(_palette,2));
 			pl->setTitle(title.c_str());
 			pl->setSamples(x.data(), y[i].data(), x.size());
 			_plot->push_back(pl);
@@ -109,6 +151,7 @@ private:
 	std::shared_ptr<std::mutex> _mtx;
 	std::shared_ptr<std::list<QwtPlotCurve*>> _plot;
 	std::vector<std::string> _file;
+	clgen _palette;
 };
 
 

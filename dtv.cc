@@ -11,6 +11,7 @@
 
 dtv::widget::widget(QWidget* parent)
 : QwtPlot(parent)
+, _palette("red,blue,green,magenta,black,[lightgray]")
 {
 	setWindowTitle(" ");
 	setPalette(QColor(Qt::white));
@@ -109,7 +110,7 @@ void dtv::widget::ylabel(std::string s)
 
 void dtv::widget::load(std::vector<std::string> files)
 {
-	ld.reset(new loader(files)); 
+	ld.reset(new loader(files, _palette)); 
 	std::thread([this]{ this->ld->run(); }).detach();
 	_timer.start(100);
 }
